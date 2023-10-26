@@ -1,12 +1,15 @@
 package com.mycompany.proyectofinalpoo;
 
+import java.util.Map;
 import javax.swing.JOptionPane;
 
 public class addProducto extends javax.swing.JFrame {
-
+    
+    Map<String, Producto> listaTempporal;
  
-    public addProducto() {
+    public addProducto(Map<String, Producto> listaProductosDic) {
         initComponents();
+        listaTempporal = listaProductosDic;
     }
 
     /**
@@ -174,8 +177,10 @@ public class addProducto extends javax.swing.JFrame {
             else
             {
                 Producto ProductoNuevo = new Producto(conexPrincipal.retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
-                conexPrincipal.listaProductosDic.put(ProductoNuevo.getIDProducto(), ProductoNuevo);
+                conexPrincipal.listaProductosDic.put(ProductoNuevo.getNombre(), ProductoNuevo);
                 Object[] nuevoProducto  = {ProductoNuevo.getIDProducto(),ProductoNuevo.getNombre(),ProductoNuevo.getCantidad(),ProductoNuevo.getPrecio(), conexPrincipal.retornarDisponibilidadProducto(ProductoNuevo.isEstado())};
+                conexPrincipal.modeloTablaInventario.addRow(nuevoProducto);
+                conexPrincipal.modeloTablaInventario.fireTableDataChanged();
                 JOptionPane.showMessageDialog(rootPane, "Se agrego correctamente el producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
             }   
@@ -223,7 +228,7 @@ public class addProducto extends javax.swing.JFrame {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new addProducto().setVisible(true);
+                //new addProducto().setVisible(true);
             }
         });
     }
