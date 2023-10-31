@@ -55,7 +55,7 @@ public class PrincipalGI extends javax.swing.JFrame
     
     //Metodos relacionados con el TabbedPane de ventass.
     
-    public int[] verificaProductoTablaVentas(int opcionAEjecutar)
+    /*public int[] verificaProductoTablaVentas(int opcionAEjecutar)
     {
         int existe = 0;
         int contadorFila = 0;
@@ -74,7 +74,7 @@ public class PrincipalGI extends javax.swing.JFrame
         listaRespuesta[1] = contadorFila;
                 
         return listaRespuesta;
-    }
+    }*/
     
     
     
@@ -85,27 +85,24 @@ public class PrincipalGI extends javax.swing.JFrame
      */
      public void cargarProductosPredeterminados()
     {
-        Producto frijol = new Producto(retornaIDProducto(),"Frijol Bola Roja 500gr",10,10_500,true);
-        listaProductosDic.put(frijol.getNombre(),frijol);
-        Object[] producto0 =  {frijol.getIDProducto(), frijol.getNombre(), frijol.getCantidad(), frijol.getPrecio(), retornarDisponibilidadProducto(frijol.isEstado())};
-        modeloTablaInventario.addRow(producto0);
+        agregarProducto(retornaIDProducto(),"Frijol Bola Roja 500gr",10,10_500,true);
+        agregarProducto(retornaIDProducto(),"Lentejas Maritza premium 500gr",20,4_300,true);
+        agregarProducto(retornaIDProducto(),"Arroz del llano 500gr",11,2_300,true);
+        agregarProducto(retornaIDProducto(),"Azucar Incauca blanca 500gr",16,3_000,true);
+        agregarProducto(retornaIDProducto(),"Frijol Bola Roja 500gr",10,10_500,true);
         
-        Producto lentejas = new Producto(retornaIDProducto(),"Lentejas Maritza premium 500gr",20,4_300,true);
-        listaProductosDic.put(lentejas.getNombre(),lentejas);
-        Object[] producto1 =  {lentejas.getIDProducto(), lentejas.getNombre(), lentejas.getCantidad(), lentejas.getPrecio(), retornarDisponibilidadProducto(lentejas.isEstado())};
-        modeloTablaInventario.addRow(producto1);
-        
-        Producto arroz = new Producto(retornaIDProducto(),"Arroz del llano 500gr",11,2_300,true);
-        listaProductosDic.put(arroz.getNombre(),arroz);
-        Object[] producto2 =  {arroz.getIDProducto(), arroz.getNombre(), arroz.getCantidad(), arroz.getPrecio(), retornarDisponibilidadProducto(arroz.isEstado())};
-        modeloTablaInventario.addRow(producto2);
-        
-        Producto azucar = new Producto(retornaIDProducto(),"Azucar Incauca blanca 500gr",16,3_000,true);
-        listaProductosDic.put(azucar.getNombre(),azucar);
-        Object[] producto3 =  {azucar.getIDProducto(), azucar.getNombre(), azucar.getCantidad(), azucar.getPrecio(), retornarDisponibilidadProducto(azucar.isEstado())};
-        modeloTablaInventario.addRow(producto3);
     }
     
+     
+     public void agregarProducto(int IDProducto, String nombre, int cantidad, int precio, boolean estado){
+         
+        Producto pro = new Producto(IDProducto,  nombre,  cantidad,  precio,  estado);
+        listaProductosDic.put(pro.getNombre(),pro);
+        Object[] producto0 =  {pro.getIDProducto(), pro.getNombre(), pro.getCantidad(), pro.getPrecio(), retornarDisponibilidadProducto(pro.isEstado())};
+        modeloTablaInventario.addRow(producto0);
+        
+        
+     }
     /**
      * Metodo que permite el incremento del atributo IDProducto de la clase Producto.
      * @return > IDProducto incrementado en 1.
@@ -156,6 +153,20 @@ public class PrincipalGI extends javax.swing.JFrame
         }
         
         return productoExistente;
+    }
+    
+    public int cantidadExistencia(int idProducto)
+    {
+        int total =0;
+        for (int i = 0; i < modeloTablaInventario.getRowCount(); i++) {
+            
+            if (Integer.parseInt(modeloTablaInventario.getValueAt(i, 0).toString())==idProducto) {
+                total=Integer.parseInt(modeloTablaInventario.getValueAt(i, 2).toString());
+            }
+            
+        }
+        
+        return total;
     }
 
     @SuppressWarnings("unchecked")
@@ -1002,6 +1013,7 @@ public class PrincipalGI extends javax.swing.JFrame
     private void btt_agregar_codigo_del_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_agregar_codigo_del_productoActionPerformed
         Producto productoAdd;
         int subtotal = 0;
+        int cantidad = 0;
         
         if(txtNombreProducto.getText().equals("") || txt_cantidad.getText().equals(""))
         {
@@ -1011,24 +1023,41 @@ public class PrincipalGI extends javax.swing.JFrame
         {
             JOptionPane.showMessageDialog(null, "El producto no existe en el inventario","ERROR",JOptionPane.WARNING_MESSAGE);
         }
+        //else if (Integer.parseInt(txt_cantidad.getText())<cantidadExistencia(modeloTablaVentas.getValueAt(ERROR, 0)))
+        //{
+            
+        //}
         else
         {
-            
-            
-            
-            if (verificaProductoTablaVentas(1) == 1)
-            {
-                
-            }
+            boolean existe =false;
             noProducto++;
             productoAdd = listaProductosDic.get(txtNombreProducto.getText());
             subtotal = Integer.parseInt(txt_cantidad.getText()) * productoAdd.getPrecio();
-            Object[] producto = {noProducto,productoAdd.getIDProducto(),productoAdd.getNombre(),txt_cantidad.getText(),productoAdd.getPrecio(),subtotal};
-            modeloTablaVentas.addRow(producto);
+            
+            for (int i = 0; i < modeloTablaVentas.getRowCount(); i++) {
+                if (Integer.parseInt(modeloTablaVentas.getValueAt(i, 1).toString())==productoAdd.getIDProducto()) {
+                    existe=true;
+                    
+                    int cantidadNueva = Integer.parseInt(txt_cantidad.getText())+Integer.parseInt(modeloTablaVentas.getValueAt(i, 3).toString());
+                    int subTotalNuevo = cantidadNueva*productoAdd.getPrecio();
+                    
+                    Object[] producto = {noProducto,productoAdd.getIDProducto(),productoAdd.getNombre(),cantidadNueva,productoAdd.getPrecio(),subTotalNuevo};
+                    modeloTablaVentas.addRow(producto);
+                    modeloTablaVentas.removeRow(i);
+                    
+                }
+            }
+            
+            if (!existe) {
+                Object[] producto = {noProducto,productoAdd.getIDProducto(),productoAdd.getNombre(),txt_cantidad.getText(),productoAdd.getPrecio(),subtotal};
+                modeloTablaVentas.addRow(producto);
+                
+                
+                
+            }
+            
         }
-        
-        
-        
+    
         
     }//GEN-LAST:event_btt_agregar_codigo_del_productoActionPerformed
 
@@ -1053,14 +1082,12 @@ public class PrincipalGI extends javax.swing.JFrame
     }//GEN-LAST:event_txt_buscarKeyReleased
 
     private void bttAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAddProductoActionPerformed
-        //addProducto add = new addProducto();
-        //add.setVisible(true);
+        addProducto add = new addProducto();
+        add.setVisible(true);
         
-        //if(add.getRootPane() != null)
-        {
-            //modeloTablaInventario.addRow();
-            //modeloTablaInventario.fireTableDataChanged();
-        }
+        
+        
+        
     }//GEN-LAST:event_bttAddProductoActionPerformed
 
     private void bttEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttEliminarProductoActionPerformed

@@ -5,11 +5,11 @@ import javax.swing.JOptionPane;
 
 public class addProducto extends javax.swing.JFrame {
     
-    Map<String, Producto> listaTempporal;
+    
  
-    public addProducto(Map<String, Producto> listaProductosDic) {
+    public addProducto () {
         initComponents();
-        listaTempporal = listaProductosDic;
+        
     }
 
     /**
@@ -176,9 +176,15 @@ public class addProducto extends javax.swing.JFrame {
             }
             else
             {
-                Producto ProductoNuevo = new Producto(conexPrincipal.retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
+                
+                
+                PrincipalGI.agregarProducto (conexPrincipal.retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
+                
                 conexPrincipal.listaProductosDic.put(ProductoNuevo.getNombre(), ProductoNuevo);
+                
                 Object[] nuevoProducto  = {ProductoNuevo.getIDProducto(),ProductoNuevo.getNombre(),ProductoNuevo.getCantidad(),ProductoNuevo.getPrecio(), conexPrincipal.retornarDisponibilidadProducto(ProductoNuevo.isEstado())};
+                
+                
                 conexPrincipal.modeloTablaInventario.addRow(nuevoProducto);
                 conexPrincipal.modeloTablaInventario.fireTableDataChanged();
                 JOptionPane.showMessageDialog(rootPane, "Se agrego correctamente el producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
