@@ -174,7 +174,7 @@ public class addProducto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "El producto ya existe.", "ERROR!", JOptionPane.WARNING_MESSAGE);
                 txtNombreNuevoProducto.setText("");
             }
-            else
+            /*else
             {
                 
                 
@@ -189,7 +189,7 @@ public class addProducto extends javax.swing.JFrame {
                 conexPrincipal.modeloTablaInventario.fireTableDataChanged();
                 JOptionPane.showMessageDialog(rootPane, "Se agrego correctamente el producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
-            }   
+            }  */ 
                         
         }
         else

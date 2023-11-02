@@ -12,19 +12,30 @@ import javax.swing.table.DefaultTableModel;
 public class PrincipalGI extends javax.swing.JFrame 
 {
     NumberFormat nf = NumberFormat.getCurrencyInstance();
-    Map<String, Producto> listaProductosDic;
+    
+    //Diccionarios.
+    Map<String, Producto> dicInventario;
+    Map<String, Producto> dicVentas;
     
     DefaultTableModel modeloTablaInventario, modeloTablaVentas;
     
+    
     //Variables de clase
-    private int IDProducto = 00;
-    private int noProducto = 0;
+    private String contadorFormateado;
+    private int IDProducto=0;
+    private int numeroProducto = 0;
+    private int subtotal = 0;
+    String formato;
 
 
     public PrincipalGI() 
     {
+        this.formato = "%03d";
         initComponents();
-        listaProductosDic = new HashMap<>();
+        
+        //Creando los diccionarios
+        dicInventario = new HashMap<>();
+        dicVentas = new HashMap<>();
         
         //Seteando las fechas a los txt
         txt_fecha_tab_ventas.setText(fecha());
@@ -34,7 +45,14 @@ public class PrincipalGI extends javax.swing.JFrame
         //Modelo y especificaciones de la Tabla de Ventas
         modeloTablaVentas = (DefaultTableModel) tablaVentas.getModel();
         
+        //Modelo y especificaciones de la Tabla de ventas
         
+        /*modeloTablaVentas = (DefaultTableModel) tablaVentas.getModel();
+        tablaVentas.getColumnModel().getColumn(1).setMaxWidth(100);
+        tablaVentas.getColumnModel().getColumn(1).setPreferredWidth(100);
+        tablaVentas.getColumnModel().getColumn(2).setMaxWidth(280);
+        tablaVentas.getColumnModel().getColumn(2).setPreferredWidth(280);
+        */
         //Modelo y especificaciones de la Tabla de Inventario
         modeloTablaInventario = (DefaultTableModel) tablaInventario.getModel();
         tablaInventario.getColumnModel().getColumn(0).setMaxWidth(100);
@@ -42,7 +60,7 @@ public class PrincipalGI extends javax.swing.JFrame
         tablaInventario.getColumnModel().getColumn(1).setMaxWidth(280);
         tablaInventario.getColumnModel().getColumn(1).setPreferredWidth(280);
         
-        
+        //Cargando los productos predeterminados
         cargarProductosPredeterminados();
     }
     
@@ -51,6 +69,13 @@ public class PrincipalGI extends javax.swing.JFrame
         Date fecha = new Date();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/YYYY");
         return df.format(fecha);
+    }
+    
+    //Metodos relacionados con el TabbedPane de Ventas.
+    public int retornaNumeracionProductoVentas()
+    {
+        numeroProducto++;
+        return numeroProducto;
     }
     
     //Metodos relacionados con el TabbedPane de ventass.
@@ -83,25 +108,27 @@ public class PrincipalGI extends javax.swing.JFrame
     /**
      * Metodo que carga 4 productos predeterminados a la Tabla de Inventario.
      */
+     //Metodos relacionados con el TabbedPane de Inventario.
+    /**
+     * Metodo que carga 4 productos predeterminados a la Tabla de Inventario.
+     */
      public void cargarProductosPredeterminados()
-    {
-        agregarProducto(retornaIDProducto(),"Frijol Bola Roja 500gr",10,10_500,true);
-        agregarProducto(retornaIDProducto(),"Lentejas Maritza premium 500gr",20,4_300,true);
-        agregarProducto(retornaIDProducto(),"Arroz del llano 500gr",11,2_300,true);
-        agregarProducto(retornaIDProducto(),"Azucar Incauca blanca 500gr",16,3_000,true);
-        agregarProducto(retornaIDProducto(),"Frijol Bola Roja 500gr",10,10_500,true);
+     {
+        agregarProductoDicInventario(retornaIDProducto(),"Frijol Bola Roja 500gr",100,10_500,true);
+        agregarProductoDicInventario(retornaIDProducto(),"Lentejas Maritza premium 500gr",250,4_300,true);
+        agregarProductoDicInventario(retornaIDProducto(),"Arroz del llano 500gr",301,2_300,true);
+        agregarProductoDicInventario(retornaIDProducto(),"Azucar Incauca blanca 500gr",58,3_000,true);
         
-    }
-    
+     }
      
-     public void agregarProducto(int IDProducto, String nombre, int cantidad, int precio, boolean estado){
-         
+     public void agregarProductoDicInventario(int IDProducto, String nombre, int cantidad, int precio, boolean estado)
+     {
+        String contadorFormateado; 
         Producto pro = new Producto(IDProducto,  nombre,  cantidad,  precio,  estado);
-        listaProductosDic.put(pro.getNombre(),pro);
-        Object[] producto0 =  {pro.getIDProducto(), pro.getNombre(), pro.getCantidad(), pro.getPrecio(), retornarDisponibilidadProducto(pro.isEstado())};
+        dicInventario.put(pro.getNombre(),pro);
+        Object[] producto0 =  {contadorFormateado = String.format(formato, pro.getIDProducto()), pro.getNombre(), pro.getCantidad(), pro.getPrecio(), retornarDisponibilidadProducto(pro.isEstado())};
         modeloTablaInventario.addRow(producto0);
-        
-        
+        modeloTablaInventario.fireTableDataChanged();
      }
     /**
      * Metodo que permite el incremento del atributo IDProducto de la clase Producto.
@@ -142,7 +169,7 @@ public class PrincipalGI extends javax.swing.JFrame
     {
         boolean productoExistente = false;
         
-        for (Map.Entry<String, Producto> entry : listaProductosDic.entrySet())
+        for (Map.Entry<String, Producto> entry : dicInventario.entrySet())
         {
             productoExistente = entry.getKey().equals(nombreProductoNuevo);
             
@@ -201,6 +228,7 @@ public class PrincipalGI extends javax.swing.JFrame
         jPanel12 = new javax.swing.JPanel();
         bttCobrar = new javax.swing.JButton();
         bttCierreCaja = new javax.swing.JButton();
+        bttEliminarP = new javax.swing.JButton();
         pnl_inventario = new javax.swing.JPanel();
         panel_parte_superior1 = new javax.swing.JPanel();
         nombre_negocio1 = new javax.swing.JLabel();
@@ -404,7 +432,9 @@ public class PrincipalGI extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        tablaVentas.setEnabled(false);
+        tablaVentas.setColumnSelectionAllowed(false);
+        tablaVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        tablaVentas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tablaVentas);
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 255));
@@ -496,6 +526,13 @@ public class PrincipalGI extends javax.swing.JFrame
             }
         });
 
+        bttEliminarP.setText("Eliminar Producto");
+        bttEliminarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttEliminarPActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_ventasLayout = new javax.swing.GroupLayout(pnl_ventas);
         pnl_ventas.setLayout(pnl_ventasLayout);
         pnl_ventasLayout.setHorizontalGroup(
@@ -512,14 +549,17 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnl_ventasLayout.createSequentialGroup()
-                .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnl_ventasLayout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(bttEliminarP)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
                         .addComponent(bttCobrar)
                         .addGap(37, 37, 37)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -549,10 +589,11 @@ public class PrincipalGI extends javax.swing.JFrame
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
                         .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(bttCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bttEliminarP))
                         .addGap(31, 31, 31)))
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 24, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ventas", pnl_ventas);
@@ -1011,54 +1052,83 @@ public class PrincipalGI extends javax.swing.JFrame
     }//GEN-LAST:event_txtNombreProductoKeyPressed
 
     private void btt_agregar_codigo_del_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_agregar_codigo_del_productoActionPerformed
-        Producto productoAdd;
-        int subtotal = 0;
-        int cantidad = 0;
+        String nombreProducto = txtNombreProducto.getText();
+        int cantidad = Integer.parseInt(txt_cantidad.getText());
+        Producto productoInventario = dicInventario.get(nombreProducto);
         
-        if(txtNombreProducto.getText().equals("") || txt_cantidad.getText().equals(""))
+         if(nombreProducto.equals("") || txt_cantidad.getText().equals(""))
         {
             JOptionPane.showMessageDialog(null, "Verifique el nombre y la cantidad.","ERROR",JOptionPane.WARNING_MESSAGE);
+            txtNombreProducto.setText("");
+            txt_cantidad.setText("");
         }
-        else if(!verificaProductoDuplicado(txtNombreProducto.getText()))
+        else if(!dicInventario.containsKey(nombreProducto))
         {
             JOptionPane.showMessageDialog(null, "El producto no existe en el inventario","ERROR",JOptionPane.WARNING_MESSAGE);
         }
-        //else if (Integer.parseInt(txt_cantidad.getText())<cantidadExistencia(modeloTablaVentas.getValueAt(ERROR, 0)))
-        //{
-            
-        //}
+        else if (cantidad > productoInventario.getCantidad())
+        {
+            JOptionPane.showMessageDialog(null, "La cantidad excede a las unidades existentes","ERROR",JOptionPane.WARNING_MESSAGE);
+        }
         else
         {
-            boolean existe =false;
-            noProducto++;
-            productoAdd = listaProductosDic.get(txtNombreProducto.getText());
-            subtotal = Integer.parseInt(txt_cantidad.getText()) * productoAdd.getPrecio();
+            if(dicVentas.containsKey(nombreProducto))
+            {
+                Producto p = dicVentas.get(nombreProducto);
+                p.setCantidad(p.getCantidad()+cantidad);
+                subtotal = p.getPrecio()*p.getCantidad();
+                
             
-            for (int i = 0; i < modeloTablaVentas.getRowCount(); i++) {
-                if (Integer.parseInt(modeloTablaVentas.getValueAt(i, 1).toString())==productoAdd.getIDProducto()) {
-                    existe=true;
-                    
-                    int cantidadNueva = Integer.parseInt(txt_cantidad.getText())+Integer.parseInt(modeloTablaVentas.getValueAt(i, 3).toString());
-                    int subTotalNuevo = cantidadNueva*productoAdd.getPrecio();
-                    
-                    Object[] producto = {noProducto,productoAdd.getIDProducto(),productoAdd.getNombre(),cantidadNueva,productoAdd.getPrecio(),subTotalNuevo};
-                    modeloTablaVentas.addRow(producto);
-                    modeloTablaVentas.removeRow(i);
-                    
+            for (int i = 0; i < modeloTablaVentas.getRowCount(); i++) 
+                {
+                    if (Integer.parseInt(modeloTablaVentas.getValueAt(i, 1).toString())==p.getIDProducto()) 
+                    {
+                        modeloTablaVentas.removeRow(i);
+                        Object[] productoVenta = {i+1, contadorFormateado = String.format(formato,p.getIDProducto()), 
+                            p.getNombre(), p.getCantidad(), p.getPrecio(), subtotal};
+                        modeloTablaVentas.insertRow(i,productoVenta);
+                        modeloTablaVentas.fireTableDataChanged();
+                        
+                        break;
+                    }
                 }
             }
-            
-            if (!existe) {
-                Object[] producto = {noProducto,productoAdd.getIDProducto(),productoAdd.getNombre(),txt_cantidad.getText(),productoAdd.getPrecio(),subtotal};
-                modeloTablaVentas.addRow(producto);
+            else
+            {
+                Producto productoModificado = new Producto(productoInventario.getIDProducto(),productoInventario.getNombre(), cantidad,
+                    productoInventario.getPrecio(), productoInventario.isEstado()); 
                 
+                dicVentas.put(nombreProducto, productoModificado);
+                Producto p = dicVentas.get(nombreProducto);;
+                subtotal = p.getPrecio()*cantidad;
                 
+                Object[] productoVenta = {retornaNumeracionProductoVentas(),contadorFormateado = String.format(formato,p.getIDProducto()), 
+                    p.getNombre(), cantidad, p.getPrecio(), subtotal};
+                
+                modeloTablaVentas.addRow(productoVenta);
+                modeloTablaVentas.fireTableDataChanged();
                 
             }
-            
+                Producto pinv = dicInventario.get(nombreProducto);
+                pinv.setCantidad(pinv.getCantidad()-cantidad);
+                
+                for (int i = 0; i < modeloTablaInventario.getRowCount(); i++) {
+                    if  (Integer.parseInt(modeloTablaInventario.getValueAt(i, 0).toString())==pinv.getIDProducto())
+                    {
+                        modeloTablaInventario.removeRow(i);
+                        Object[] producto0 =  {contadorFormateado = String.format(formato, pinv.getIDProducto()), pinv.getNombre(), pinv.getCantidad(), pinv.getPrecio(), retornarDisponibilidadProducto(pinv.isEstado())};
+                        modeloTablaInventario.addRow(producto0);
+                        modeloTablaInventario.fireTableDataChanged();
+                    }
+                }
+                
+            int subtotal=0;
+                for (int i = 0; i < modeloTablaVentas.getRowCount(); i++)
+                {
+                    subtotal += Integer.parseInt(modeloTablaVentas.getValueAt(i, 5).toString());
+                }
+                    txt_monto_total.setText(Integer.toString(subtotal));
         }
-    
-        
     }//GEN-LAST:event_btt_agregar_codigo_del_productoActionPerformed
 
     private void txt_monto_totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_monto_totalActionPerformed
@@ -1066,7 +1136,7 @@ public class PrincipalGI extends javax.swing.JFrame
     }//GEN-LAST:event_txt_monto_totalActionPerformed
 
     private void bttCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttCobrarActionPerformed
-        
+
     }//GEN-LAST:event_bttCobrarActionPerformed
 
     private void txt_fecha_tab_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecha_tab_inventarioActionPerformed
@@ -1084,10 +1154,6 @@ public class PrincipalGI extends javax.swing.JFrame
     private void bttAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAddProductoActionPerformed
         addProducto add = new addProducto();
         add.setVisible(true);
-        
-        
-        
-        
     }//GEN-LAST:event_bttAddProductoActionPerformed
 
     private void bttEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttEliminarProductoActionPerformed
@@ -1113,6 +1179,27 @@ public class PrincipalGI extends javax.swing.JFrame
     private void bttAddProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttAddProductoMouseClicked
         
     }//GEN-LAST:event_bttAddProductoMouseClicked
+
+    private void bttEliminarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttEliminarPActionPerformed
+         modeloTablaVentas.removeRow(tablaVentas.getSelectedRow());
+         
+         String nombreProducto = txtNombreProducto.getText();
+         int cantidad = Integer.parseInt(txt_cantidad.getText());
+        //Producto productoInventario = dicInventario.get(nombreProducto);
+         
+         Producto pinv = dicInventario.get(nombreProducto);
+         pinv.setCantidad(pinv.getCantidad()+cantidad);
+                
+            for (int i = 0; i < modeloTablaInventario.getRowCount(); i++) {
+                    if  (Integer.parseInt(modeloTablaInventario.getValueAt(i, 0).toString())==pinv.getIDProducto())
+                    {
+                        modeloTablaInventario.removeRow(i);
+                        Object[] producto0 =  {contadorFormateado = String.format(formato, pinv.getIDProducto()), pinv.getNombre(), pinv.getCantidad(), pinv.getPrecio(), retornarDisponibilidadProducto(pinv.isEstado())};
+                        modeloTablaInventario.addRow(producto0);
+                        modeloTablaInventario.fireTableDataChanged();
+                    }
+                }
+    }//GEN-LAST:event_bttEliminarPActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1153,6 +1240,7 @@ public class PrincipalGI extends javax.swing.JFrame
     private javax.swing.JButton bttAddProducto;
     private javax.swing.JButton bttCierreCaja;
     private javax.swing.JButton bttCobrar;
+    private javax.swing.JButton bttEliminarP;
     private javax.swing.JButton bttEliminarProducto;
     public javax.swing.JButton btt_agregar_codigo_del_producto;
     private javax.swing.JLabel imagenNegocio;
