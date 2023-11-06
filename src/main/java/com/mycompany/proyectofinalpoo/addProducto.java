@@ -6,10 +6,15 @@ import javax.swing.JOptionPane;
 public class addProducto extends javax.swing.JFrame {
     
     
+ Map<String, Producto> dicInventario;
  
     public addProducto () {
         initComponents();
-        
+    }
+    
+    public void copiarDiccionario (Map<String, Producto> diccionario)
+    {
+        this.dicInventario = diccionario;
     }
 
     /**
@@ -174,22 +179,22 @@ public class addProducto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "El producto ya existe.", "ERROR!", JOptionPane.WARNING_MESSAGE);
                 txtNombreNuevoProducto.setText("");
             }
-            /*else
+            else
             {
+                Producto productoNuevo = new Producto(conexPrincipal.retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
                 
+                dicInventario.put(productoNuevo.getNombre(), productoNuevo);
                 
-                PrincipalGI.agregarProducto (conexPrincipal.retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
+                conexPrincipal.actualizarDiccionario(dicInventario);
+                //System.out.println(dicInventario);
                 
-                conexPrincipal.listaProductosDic.put(ProductoNuevo.getNombre(), ProductoNuevo);
+                //Object[] nuevoProducto  = {productoNuevo.getIDProducto(),productoNuevo.getNombre(),productoNuevo.getCantidad(),productoNuevo.getPrecio(), 
+                    //conexPrincipal.retornarDisponibilidadProducto(productoNuevo.isEstado())};
                 
-                Object[] nuevoProducto  = {ProductoNuevo.getIDProducto(),ProductoNuevo.getNombre(),ProductoNuevo.getCantidad(),ProductoNuevo.getPrecio(), conexPrincipal.retornarDisponibilidadProducto(ProductoNuevo.isEstado())};
-                
-                
-                conexPrincipal.modeloTablaInventario.addRow(nuevoProducto);
-                conexPrincipal.modeloTablaInventario.fireTableDataChanged();
+                //conexPrincipal.actualizarTablaInventario(dicInventario);
                 JOptionPane.showMessageDialog(rootPane, "Se agrego correctamente el producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
-            }  */ 
+            }  
                         
         }
         else
