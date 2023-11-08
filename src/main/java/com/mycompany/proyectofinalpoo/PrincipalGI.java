@@ -115,6 +115,9 @@ public class PrincipalGI extends javax.swing.JFrame
      */
      public void cargarProductosPredeterminados()
      {
+         while ( modeloTablaInventario.getRowCount()>0){
+            modeloTablaInventario.removeRow(0);
+         }
         agregarProductoDicInventario(retornaIDProducto(),"Frijol Bola Roja 500gr",100,10_500,true);
         agregarProductoDicInventario(retornaIDProducto(),"Lentejas Maritza premium 500gr",250,4_300,true);
         agregarProductoDicInventario(retornaIDProducto(),"Arroz del llano 500gr",301,2_300,true);
@@ -138,7 +141,7 @@ public class PrincipalGI extends javax.swing.JFrame
          boolean resultado =  true;
          Producto pinv;
          
-         while (modeloTablaInventario.getRowCount()>1){
+         while (modeloTablaInventario.getRowCount()>0){
              modeloTablaInventario.removeRow(0);
          }
          
@@ -457,7 +460,6 @@ public class PrincipalGI extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        tablaVentas.setColumnSelectionAllowed(false);
         tablaVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tablaVentas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tablaVentas);
@@ -581,9 +583,9 @@ public class PrincipalGI extends javax.swing.JFrame
                         .addComponent(bttEliminarP)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
+                        .addGap(38, 38, 38)
                         .addComponent(bttCobrar)
-                        .addGap(37, 37, 37)
+                        .addGap(46, 46, 46)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
@@ -606,17 +608,22 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_ventasLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_ventasLayout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
+                                .addComponent(bttEliminarP)
+                                .addGap(45, 45, 45))))
+                    .addGroup(pnl_ventasLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
                         .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bttCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bttEliminarP))
-                        .addGap(31, 31, 31)))
+                            .addComponent(bttCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 24, Short.MAX_VALUE))
         );
@@ -1164,7 +1171,8 @@ public class PrincipalGI extends javax.swing.JFrame
     }//GEN-LAST:event_txt_monto_totalActionPerformed
 
     private void bttCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttCobrarActionPerformed
-
+        bttCobrar.setText(txt_monto_total.getText());
+        JOptionPane.showMessageDialog(null, "El valor total de la compra es de: " + bttCobrar.getText());
     }//GEN-LAST:event_bttCobrarActionPerformed
 
     private void txt_fecha_tab_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecha_tab_inventarioActionPerformed
@@ -1226,7 +1234,7 @@ public class PrincipalGI extends javax.swing.JFrame
                         modeloTablaInventario.addRow(producto0);
                     }
                 }
-            
+            dicVentas.remove(nombreProducto);
             modeloTablaVentas.removeRow(tablaVentas.getSelectedRow());
     }//GEN-LAST:event_bttEliminarPActionPerformed
 
