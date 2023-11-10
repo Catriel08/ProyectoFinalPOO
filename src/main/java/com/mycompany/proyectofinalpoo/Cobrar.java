@@ -1,26 +1,21 @@
+
 package com.mycompany.proyectofinalpoo;
 
-import java.util.Map;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
-public class addProducto extends javax.swing.JFrame {
-    
-    
- Map<String, Producto> dicInventario;
- 
-    public addProducto () {
+import javax.swing.JButton;
+
+public class Cobrar extends javax.swing.JFrame {
+
+    /**
+     * Creates new form Cobrar
+     */
+    public Cobrar() {
         initComponents();
     }
     
-    public JButton retornaBotonAdd()
+    public JButton retornaBttAceptar()
     {
-        return bttAdd;
-    }
-    
-    public void copiarDiccionario (Map<String, Producto> diccionario)
-    {
-        this.dicInventario = diccionario;
+        return btt_aceptar;
     }
 
     /**
@@ -39,17 +34,21 @@ public class addProducto extends javax.swing.JFrame {
         img_1 = new javax.swing.JLabel();
         img_2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txt_total = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtNombreNuevoProducto = new javax.swing.JTextField();
+        txt_cuanto_paga = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtCantidadNuevoProducto = new javax.swing.JTextField();
+        txt_cambio = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        txtValorNuevoProducto = new javax.swing.JTextField();
+        txt_nombre_cliente = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtMetodoPago = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        bttAdd = new javax.swing.JButton();
+        btt_aceptar = new javax.swing.JButton();
         btt_cancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -58,7 +57,7 @@ public class addProducto extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Roboto", 3, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("AÑADIR PRODUCTO");
+        jLabel7.setText("PUNTO DE COBRO");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -85,44 +84,88 @@ public class addProducto extends javax.swing.JFrame {
         jPanel1.add(img_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 0, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new java.awt.GridLayout(3, 2));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Informacion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto", 1, 15))); // NOI18N
+        jPanel2.setLayout(new java.awt.GridLayout(5, 2));
+
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel2.setText("Total a pagar:");
+        jPanel2.add(jLabel2);
+
+        txt_total.setEditable(false);
+        txt_total.setBackground(new java.awt.Color(204, 204, 204));
+        txt_total.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        txt_total.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_totalActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txt_total);
 
         jLabel4.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel4.setText("Nombre del producto");
+        jLabel4.setText("Con cuanto paga:");
         jPanel2.add(jLabel4);
-        jPanel2.add(txtNombreNuevoProducto);
+
+        txt_cuanto_paga.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        txt_cuanto_paga.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txt_cuanto_pagaInputMethodTextChanged(evt);
+            }
+        });
+        txt_cuanto_paga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_cuanto_pagaActionPerformed(evt);
+            }
+        });
+        txt_cuanto_paga.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_cuanto_pagaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txt_cuanto_pagaKeyTyped(evt);
+            }
+        });
+        jPanel2.add(txt_cuanto_paga);
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel3.setText("Cantidad del producto");
+        jLabel3.setText("Cambio:");
         jPanel2.add(jLabel3);
-        jPanel2.add(txtCantidadNuevoProducto);
+
+        txt_cambio.setEditable(false);
+        txt_cambio.setBackground(new java.awt.Color(204, 204, 204));
+        txt_cambio.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        jPanel2.add(txt_cambio);
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel1.setText("Valor unitario del producto");
+        jLabel1.setText("Nombre del cliente:");
         jPanel2.add(jLabel1);
 
-        txtValorNuevoProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtValorNuevoProductoActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txtValorNuevoProducto);
+        txt_nombre_cliente.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        jPanel2.add(txt_nombre_cliente);
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 490, 190));
+        jLabel5.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        jLabel5.setText("Metodo de pago:");
+        jPanel2.add(jLabel5);
+
+        txtMetodoPago.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        jPanel2.add(txtMetodoPago);
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 490, 270));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Botones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto Black", 0, 14))); // NOI18N
-        jPanel3.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Botones", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto Black", 0, 15))); // NOI18N
+        jPanel3.setLayout(new java.awt.GridLayout());
 
-        bttAdd.setFont(new java.awt.Font("Roboto", 3, 14)); // NOI18N
-        bttAdd.setText("Añadir");
-        bttAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        bttAdd.addActionListener(new java.awt.event.ActionListener() {
+        btt_aceptar.setFont(new java.awt.Font("Roboto", 3, 14)); // NOI18N
+        btt_aceptar.setText("Aceptar");
+        btt_aceptar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btt_aceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bttAddActionPerformed(evt);
+                btt_aceptarActionPerformed(evt);
             }
         });
-        jPanel3.add(bttAdd);
+        jPanel3.add(btt_aceptar);
 
         btt_cancelar.setFont(new java.awt.Font("Roboto", 3, 14)); // NOI18N
         btt_cancelar.setText("Cancelar");
@@ -134,7 +177,7 @@ public class addProducto extends javax.swing.JFrame {
         });
         jPanel3.add(btt_cancelar);
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 490, 80));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 490, 80));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -146,75 +189,41 @@ public class addProducto extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtValorNuevoProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorNuevoProductoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtValorNuevoProductoActionPerformed
+    private void txt_totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_totalActionPerformed
 
-    private void bttAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAddActionPerformed
-        PrincipalGI conexPrincipal = new PrincipalGI();
-        
-        String nombreNuevoProducto;       
-        int valorNuevoProducto = 0, cantidadNuevoProducto = 0;
-        
-        if(!txtCantidadNuevoProducto.getText().equals("") && !txtNombreNuevoProducto.getText().equals("") && !txtValorNuevoProducto.getText().equals(""))
-        {
-            nombreNuevoProducto=txtNombreNuevoProducto.getText();
-            cantidadNuevoProducto=Integer.parseInt(txtCantidadNuevoProducto.getText());
-            valorNuevoProducto=Integer.parseInt(txtValorNuevoProducto.getText());
-            
-            if (cantidadNuevoProducto < 0)
-            {
-                JOptionPane.showMessageDialog(rootPane, "La cantidad no puede ser menor a 0", "ERROR!", JOptionPane.WARNING_MESSAGE);
-                txtCantidadNuevoProducto.setText("");
-            }
-            else if (valorNuevoProducto <= 0)
-            {
-                JOptionPane.showMessageDialog(rootPane, "El valor del producto no puede ser 0 o menor.", "ERROR!", JOptionPane.WARNING_MESSAGE);
-                txtValorNuevoProducto.setText("");
-            }
-            else if (conexPrincipal.verificaProductoDuplicado(nombreNuevoProducto))
-            {
-                JOptionPane.showMessageDialog(rootPane, "El producto ya existe.", "ERROR!", JOptionPane.WARNING_MESSAGE);
-                txtNombreNuevoProducto.setText("");
-            }
-            else
-            {
-                Producto productoNuevo = new Producto(conexPrincipal.retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
-                
-                dicInventario.put(productoNuevo.getNombre(), productoNuevo);
-                
-                conexPrincipal.actualizarDiccionario(dicInventario);
-                //System.out.println(dicInventario);
-                
-                //Object[] nuevoProducto  = {productoNuevo.getIDProducto(),productoNuevo.getNombre(),productoNuevo.getCantidad(),productoNuevo.getPrecio(), 
-                    //conexPrincipal.retornarDisponibilidadProducto(productoNuevo.isEstado())};
-                
-                //conexPrincipal.actualizarTablaInventario(dicInventario);
-                JOptionPane.showMessageDialog(rootPane, "Se agrego correctamente el producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
-                this.setVisible(false);
-            }  
-                        
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(rootPane, "Verifique que los campos requeridos esten correctos", "ERROR!", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_bttAddActionPerformed
+    }//GEN-LAST:event_txt_totalActionPerformed
+
+    private void txt_cuanto_pagaInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txt_cuanto_pagaInputMethodTextChanged
+
+    }//GEN-LAST:event_txt_cuanto_pagaInputMethodTextChanged
+
+    private void txt_cuanto_pagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_cuanto_pagaActionPerformed
+
+    }//GEN-LAST:event_txt_cuanto_pagaActionPerformed
+
+    private void txt_cuanto_pagaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cuanto_pagaKeyReleased
+
+    }//GEN-LAST:event_txt_cuanto_pagaKeyReleased
+
+    private void txt_cuanto_pagaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_cuanto_pagaKeyTyped
+
+    }//GEN-LAST:event_txt_cuanto_pagaKeyTyped
+
+    private void btt_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_aceptarActionPerformed
+
+    }//GEN-LAST:event_btt_aceptarActionPerformed
 
     private void btt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_cancelarActionPerformed
         this.setRootPane(null);
         this.dispose();
     }//GEN-LAST:event_btt_cancelarActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */
@@ -232,40 +241,44 @@ public class addProducto extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(addProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(addProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(addProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(addProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cobrar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the dialog */
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new addProducto().setVisible(true);
+                new Cobrar().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bttAdd;
+    private javax.swing.JButton btt_aceptar;
     private javax.swing.JButton btt_cancelar;
     private javax.swing.JLabel img_1;
     private javax.swing.JLabel img_2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel nombre_negocio;
-    public javax.swing.JTextField txtCantidadNuevoProducto;
-    public javax.swing.JTextField txtNombreNuevoProducto;
-    public javax.swing.JTextField txtValorNuevoProducto;
+    public javax.swing.JTextField txtMetodoPago;
+    public javax.swing.JTextField txt_cambio;
+    public javax.swing.JTextField txt_cuanto_paga;
+    public javax.swing.JTextField txt_nombre_cliente;
+    public javax.swing.JTextField txt_total;
     // End of variables declaration//GEN-END:variables
 }

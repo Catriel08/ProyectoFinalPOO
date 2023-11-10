@@ -104,6 +104,7 @@ public class PrincipalGI extends javax.swing.JFrame
         modeloTablaVentas.setRowCount(0);
         txtNombreProducto.setText("");
         txt_cantidad.setText("");
+        numeroProducto=0;
         modeloTablaVentas.fireTableDataChanged();
     }
     
@@ -264,7 +265,6 @@ public class PrincipalGI extends javax.swing.JFrame
         jTextField4 = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         bttCobrar = new javax.swing.JButton();
-        bttCierreCaja = new javax.swing.JButton();
         bttEliminarP = new javax.swing.JButton();
         pnl_inventario = new javax.swing.JPanel();
         panel_parte_superior1 = new javax.swing.JPanel();
@@ -284,7 +284,6 @@ public class PrincipalGI extends javax.swing.JFrame
         jPanel15 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         bttAddProducto = new javax.swing.JButton();
-        bttEliminarProducto = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         panel_parte_superior2 = new javax.swing.JPanel();
         nombre_negocio2 = new javax.swing.JLabel();
@@ -295,12 +294,9 @@ public class PrincipalGI extends javax.swing.JFrame
         jPanel10 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tablaHistorialVentas = new javax.swing.JTable();
+        tablaHistorial = new javax.swing.JTable();
         jPanel16 = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        txt_buscar_venta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -314,8 +310,10 @@ public class PrincipalGI extends javax.swing.JFrame
         panel_parte_superior.setBackground(new java.awt.Color(255, 255, 255));
         panel_parte_superior.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
 
-        nombre_negocio.setFont(new java.awt.Font("AR CENA", 1, 36)); // NOI18N
+        nombre_negocio.setFont(new java.awt.Font("Cooper Black", 1, 36)); // NOI18N
         nombre_negocio.setText("PLACITA EL MONO");
+
+        imagenNegocio.setIcon(new javax.swing.ImageIcon("C:\\Users\\Brayan\\Documents\\NetBeansProjects\\ProyectoFinalPOO\\src\\main\\java\\com\\imagenes\\Carrito.png")); // NOI18N
 
         panel_fecha.setBackground(new java.awt.Color(255, 255, 255));
         panel_fecha.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fecha actual", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto", 1, 14))); // NOI18N
@@ -333,7 +331,7 @@ public class PrincipalGI extends javax.swing.JFrame
         });
         panel_fecha.add(txt_fecha_tab_ventas);
 
-        jLabel2.setFont(new java.awt.Font("AR CENA", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Cooper Black", 0, 18)); // NOI18N
         jLabel2.setText("Carrera 43 #83-03 Sur brr. Villa Juliana");
 
         javax.swing.GroupLayout panel_parte_superiorLayout = new javax.swing.GroupLayout(panel_parte_superior);
@@ -341,9 +339,9 @@ public class PrincipalGI extends javax.swing.JFrame
         panel_parte_superiorLayout.setHorizontalGroup(
             panel_parte_superiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_parte_superiorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(imagenNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(130, 130, 130)
+                .addGap(63, 63, 63)
+                .addComponent(imagenNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68)
                 .addGroup(panel_parte_superiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(nombre_negocio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -353,21 +351,19 @@ public class PrincipalGI extends javax.swing.JFrame
         );
         panel_parte_superiorLayout.setVerticalGroup(
             panel_parte_superiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_parte_superiorLayout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_parte_superiorLayout.createSequentialGroup()
                 .addGap(0, 10, Short.MAX_VALUE)
                 .addComponent(panel_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
             .addGroup(panel_parte_superiorLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nombre_negocio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panel_parte_superiorLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(imagenNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_parte_superiorLayout.createSequentialGroup()
+                .addComponent(imagenNegocio, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel8.setBackground(new java.awt.Color(0, 102, 255));
@@ -412,6 +408,7 @@ public class PrincipalGI extends javax.swing.JFrame
         });
         jPanel4.add(txtNombreProducto);
 
+        btt_agregar_codigo_del_producto.setIcon(new javax.swing.ImageIcon("C:\\Users\\Brayan\\Documents\\NetBeansProjects\\ProyectoFinalPOO\\src\\main\\java\\com\\imagenes\\agregar.png")); // NOI18N
         btt_agregar_codigo_del_producto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btt_agregar_codigo_del_producto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -546,23 +543,21 @@ public class PrincipalGI extends javax.swing.JFrame
         );
 
         bttCobrar.setBackground(new java.awt.Color(255, 102, 0));
-        bttCobrar.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        bttCobrar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         bttCobrar.setText("Cobrar");
         bttCobrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttCobrar.setPreferredSize(new java.awt.Dimension(120, 24));
         bttCobrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bttCobrarActionPerformed(evt);
             }
         });
 
-        bttCierreCaja.setText("Cierre de caja");
-        bttCierreCaja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bttCierreCajaActionPerformed(evt);
-            }
-        });
-
+        bttEliminarP.setBackground(new java.awt.Color(255, 102, 0));
+        bttEliminarP.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         bttEliminarP.setText("Eliminar Producto");
+        bttEliminarP.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        bttEliminarP.setPreferredSize(new java.awt.Dimension(120, 24));
         bttEliminarP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bttEliminarPActionPerformed(evt);
@@ -588,13 +583,11 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnl_ventasLayout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(bttEliminarP)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
-                        .addComponent(bttCobrar)
-                        .addGap(46, 46, 46)
+                        .addGap(91, 91, 91)
+                        .addComponent(bttEliminarP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(219, 219, 219)
+                        .addComponent(bttCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
@@ -620,19 +613,13 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_ventasLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_ventasLayout.createSequentialGroup()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_ventasLayout.createSequentialGroup()
-                                .addComponent(bttEliminarP)
-                                .addGap(45, 45, 45))))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnl_ventasLayout.createSequentialGroup()
-                        .addGap(25, 25, 25)
+                        .addGap(26, 26, 26)
                         .addGroup(pnl_ventasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bttCierreCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bttCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(bttEliminarP, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bttCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 24, Short.MAX_VALUE))
         );
@@ -644,7 +631,7 @@ public class PrincipalGI extends javax.swing.JFrame
         panel_parte_superior1.setBackground(new java.awt.Color(255, 255, 255));
         panel_parte_superior1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
 
-        nombre_negocio1.setFont(new java.awt.Font("AR CENA", 1, 36)); // NOI18N
+        nombre_negocio1.setFont(new java.awt.Font("Cooper Black", 1, 36)); // NOI18N
         nombre_negocio1.setText("PLACITA EL MONO");
 
         panel_fecha1.setBackground(new java.awt.Color(255, 255, 255));
@@ -663,7 +650,7 @@ public class PrincipalGI extends javax.swing.JFrame
         });
         panel_fecha1.add(txt_fecha_tab_inventario);
 
-        jLabel6.setFont(new java.awt.Font("AR CENA", 0, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Cooper Black", 0, 18)); // NOI18N
         jLabel6.setText("Carrera 43 #83-03 Sur brr. Villa Juliana");
 
         javax.swing.GroupLayout panel_parte_superior1Layout = new javax.swing.GroupLayout(panel_parte_superior1);
@@ -676,24 +663,28 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panel_parte_superior1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(nombre_negocio1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(136, 136, 136)
+                    .addComponent(nombre_negocio1))
+                .addGap(121, 121, 121)
                 .addComponent(panel_fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83))
         );
         panel_parte_superior1Layout.setVerticalGroup(
             panel_parte_superior1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_parte_superior1Layout.createSequentialGroup()
-                .addGroup(panel_parte_superior1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(nombre_negocio1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_parte_superior1Layout.createSequentialGroup()
-                .addGap(0, 11, Short.MAX_VALUE)
-                .addComponent(panel_fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(panel_parte_superior1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_parte_superior1Layout.createSequentialGroup()
+                        .addGroup(panel_parte_superior1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel_parte_superior1Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jLabel5))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nombre_negocio1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_parte_superior1Layout.createSequentialGroup()
+                        .addComponent(panel_fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))))
         );
 
         jPanel9.setBackground(new java.awt.Color(0, 102, 255));
@@ -820,16 +811,6 @@ public class PrincipalGI extends javax.swing.JFrame
         });
         jPanel5.add(bttAddProducto);
 
-        bttEliminarProducto.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        bttEliminarProducto.setText("Eliminar Producto");
-        bttEliminarProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        bttEliminarProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bttEliminarProductoActionPerformed(evt);
-            }
-        });
-        jPanel5.add(bttEliminarProducto);
-
         javax.swing.GroupLayout pnl_inventarioLayout = new javax.swing.GroupLayout(pnl_inventario);
         pnl_inventario.setLayout(pnl_inventarioLayout);
         pnl_inventarioLayout.setHorizontalGroup(
@@ -865,7 +846,7 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 70, Short.MAX_VALUE))
+                .addGap(0, 69, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Inventario", pnl_inventario);
@@ -875,7 +856,7 @@ public class PrincipalGI extends javax.swing.JFrame
         panel_parte_superior2.setBackground(new java.awt.Color(255, 255, 255));
         panel_parte_superior2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 255)));
 
-        nombre_negocio2.setFont(new java.awt.Font("AR CENA", 1, 36)); // NOI18N
+        nombre_negocio2.setFont(new java.awt.Font("Cooper Black", 1, 36)); // NOI18N
         nombre_negocio2.setText("PLACITA EL MONO");
 
         panel_fecha2.setBackground(new java.awt.Color(255, 255, 255));
@@ -894,7 +875,7 @@ public class PrincipalGI extends javax.swing.JFrame
         });
         panel_fecha2.add(txt_fecha_tab_historial);
 
-        jLabel11.setFont(new java.awt.Font("AR CENA", 0, 18)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Cooper Black", 0, 18)); // NOI18N
         jLabel11.setText("Carrera 43 #83-03 Sur brr. Villa Juliana");
 
         javax.swing.GroupLayout panel_parte_superior2Layout = new javax.swing.GroupLayout(panel_parte_superior2);
@@ -915,16 +896,15 @@ public class PrincipalGI extends javax.swing.JFrame
         panel_parte_superior2Layout.setVerticalGroup(
             panel_parte_superior2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_parte_superior2Layout.createSequentialGroup()
-                .addGroup(panel_parte_superior2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panel_parte_superior2Layout.createSequentialGroup()
-                        .addComponent(nombre_negocio2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel10))
+                .addGap(0, 10, Short.MAX_VALUE)
+                .addComponent(panel_fecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(panel_parte_superior2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(panel_fecha2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(nombre_negocio2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -952,19 +932,19 @@ public class PrincipalGI extends javax.swing.JFrame
 
         jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
 
-        tablaHistorialVentas.setModel(new javax.swing.table.DefaultTableModel(
+        tablaHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Fecha", "No. de productos", "Cantidad de produtos", "Nombre del cliente", "Total"
+                "ID Venta", "Fecha", "No. de productos", "Nombre del cliente", "Metodo de pago", "Cantidad pagada", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -975,8 +955,8 @@ public class PrincipalGI extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        tablaHistorialVentas.setEnabled(false);
-        jScrollPane3.setViewportView(tablaHistorialVentas);
+        tablaHistorial.setEnabled(false);
+        jScrollPane3.setViewportView(tablaHistorial);
 
         jPanel16.setBackground(new java.awt.Color(0, 0, 153));
 
@@ -1004,26 +984,6 @@ public class PrincipalGI extends javax.swing.JFrame
             .addGap(0, 35, Short.MAX_VALUE)
         );
 
-        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
-
-        jLabel13.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
-        jLabel13.setText("Buscar Venta:  ");
-        jPanel7.add(jLabel13);
-
-        txt_buscar_venta.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txt_buscar_venta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_buscar_ventaActionPerformed(evt);
-            }
-        });
-        txt_buscar_venta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txt_buscar_ventaKeyReleased(evt);
-            }
-        });
-        jPanel7.add(txt_buscar_venta);
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -1036,11 +996,6 @@ public class PrincipalGI extends javax.swing.JFrame
                     .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(304, 304, 304)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(356, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1048,18 +1003,13 @@ public class PrincipalGI extends javax.swing.JFrame
                 .addComponent(panel_parte_superior2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(129, 129, 129)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(547, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Historial", jPanel6);
@@ -1144,7 +1094,7 @@ public class PrincipalGI extends javax.swing.JFrame
                 subtotal = p.getPrecio()*cantidad;
                 
                 Object[] productoVenta = {retornaNumeracionProductoVentas(),contadorFormateado = String.format(formato,p.getIDProducto()), 
-                    p.getNombre(), cantidad, nf.format(p.getPrecio()), subtotal};
+                    p.getNombre(), cantidad, nf.format(p.getPrecio()),subtotal};
                 
                 modeloTablaVentas.addRow(productoVenta);
                 modeloTablaVentas.fireTableDataChanged();
@@ -1163,9 +1113,12 @@ public class PrincipalGI extends javax.swing.JFrame
                     }
                 }
                 
+                subtotal=0;
+                
                 for (int i = 0; i < modeloTablaVentas.getRowCount(); i++)
                 {
-                    montoTotal += Integer.parseInt(modeloTablaVentas.getValueAt(i, 5).toString());
+                    subtotal += Integer.parseInt(modeloTablaVentas.getValueAt(i, 5).toString());
+                    montoTotal = subtotal;
                 }
                 
                 txt_monto_total.setText(nf.format(montoTotal));
@@ -1210,12 +1163,13 @@ public class PrincipalGI extends javax.swing.JFrame
                 String cambio = conexCobrar.txt_cambio.getText();
                 int pagoCliente = Integer.parseInt(conexCobrar.txt_cuanto_paga.getText());
                 
-                Object[] venta = {retornaIDVenta(),metodo,nombre,nf.format(pagoCliente),cambio,nf.format(montoTotal)};
+                Object[] venta = {retornaIDVenta(),fecha(),productos,nombre,metodo,nf.format(pagoCliente),nf.format(montoTotal)};
                 modeloTablaHistorial.addRow(venta);
                 modeloTablaHistorial.fireTableDataChanged();
                 
                 conexCobrar.setVisible(false);
                 limpiarVenta();
+                dicVentas.clear();
                 JOptionPane.showMessageDialog(rootPane, "Se ha realizado correctamente la compra","Informacion",JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -1227,6 +1181,7 @@ public class PrincipalGI extends javax.swing.JFrame
                 conexCobrar.txt_cambio.setText(nf.format((montoTotal - dinero_ingresado)*-1));
             }
         });
+        
         
         conexCobrar.setVisible(true);
     }//GEN-LAST:event_bttCobrarActionPerformed
@@ -1240,7 +1195,7 @@ public class PrincipalGI extends javax.swing.JFrame
     }//GEN-LAST:event_txt_buscarActionPerformed
 
     private void txt_buscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscarKeyReleased
-
+        buscarProducto(txt_buscar.getText());
     }//GEN-LAST:event_txt_buscarKeyReleased
 
     private void bttAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAddProductoActionPerformed
@@ -1290,25 +1245,9 @@ public class PrincipalGI extends javax.swing.JFrame
         });
     }//GEN-LAST:event_bttAddProductoActionPerformed
 
-    private void bttEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttEliminarProductoActionPerformed
-       
-    }//GEN-LAST:event_bttEliminarProductoActionPerformed
-
     private void txt_fecha_tab_historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecha_tab_historialActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_fecha_tab_historialActionPerformed
-
-    private void txt_buscar_ventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_buscar_ventaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_buscar_ventaActionPerformed
-
-    private void txt_buscar_ventaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_buscar_ventaKeyReleased
-        
-    }//GEN-LAST:event_txt_buscar_ventaKeyReleased
-
-    private void bttCierreCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttCierreCajaActionPerformed
-       
-    }//GEN-LAST:event_bttCierreCajaActionPerformed
 
     private void bttAddProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bttAddProductoMouseClicked
         
@@ -1333,6 +1272,7 @@ public class PrincipalGI extends javax.swing.JFrame
                 }
             dicVentas.remove(nombreProducto);
             modeloTablaVentas.removeRow(tablaVentas.getSelectedRow());
+            txt_monto_total.setText("");
     }//GEN-LAST:event_bttEliminarPActionPerformed
 
     /**
@@ -1372,16 +1312,13 @@ public class PrincipalGI extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bttAddProducto;
-    private javax.swing.JButton bttCierreCaja;
     private javax.swing.JButton bttCobrar;
     private javax.swing.JButton bttEliminarP;
-    private javax.swing.JButton bttEliminarProducto;
     public javax.swing.JButton btt_agregar_codigo_del_producto;
     private javax.swing.JLabel imagenNegocio;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1403,7 +1340,6 @@ public class PrincipalGI extends javax.swing.JFrame
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1424,12 +1360,11 @@ public class PrincipalGI extends javax.swing.JFrame
     private javax.swing.JPanel pnl_fondo;
     private javax.swing.JPanel pnl_inventario;
     private javax.swing.JPanel pnl_ventas;
-    public javax.swing.JTable tablaHistorialVentas;
+    public javax.swing.JTable tablaHistorial;
     public javax.swing.JTable tablaInventario;
     public javax.swing.JTable tablaVentas;
     public javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txt_buscar;
-    private javax.swing.JTextField txt_buscar_venta;
     public javax.swing.JTextField txt_cantidad;
     private javax.swing.JTextField txt_fecha_tab_historial;
     private javax.swing.JTextField txt_fecha_tab_inventario;
