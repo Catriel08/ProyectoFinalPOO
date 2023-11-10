@@ -1,11 +1,15 @@
 
 package com.mycompany.proyectofinalpoo;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -1173,8 +1177,58 @@ public class PrincipalGI extends javax.swing.JFrame
     }//GEN-LAST:event_txt_monto_totalActionPerformed
 
     private void bttCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttCobrarActionPerformed
-        bttCobrar.setText(txt_monto_total.getText());
-        JOptionPane.showMessageDialog(null, "El valor total de la compra es de: " + bttCobrar.getText());
+        Cobrar conexCobrar = new Cobrar();
+       
+        if(modeloTablaVentas.getRowCount()==0)
+             {
+                 JOptionPane.showMessageDialog(rootPane, "Debe registrar almenos un producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
+                 return;
+             }
+        
+        conexCobrar.txt_total.setText(nf.format(montoTotal));
+        
+        JButton bttAceptar = conexCobrar.retornaBttAceptar();
+        bttAceptar.addActionListener((ActionEvent e) -> {
+            
+            if(conexCobrar.txt_nombre_cliente.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Debe ingresar el nombre del cliente","Informacion",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if((montoTotal-Integer.parseInt(conexCobrar.txt_cuanto_paga.getText()))*-1 < 0)
+            {
+                JOptionPane.showMessageDialog(rootPane,"El cambio no puede ser negativo","Informacion",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if(conexCobrar.txtMetodoPago.getText().equals(""))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Debe ingresar el metodo de pago","Informacion",JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+                int productos = modeloTablaVentas.getRowCount();
+                String nombre = conexCobrar.txt_nombre_cliente.getText();
+                String metodo = conexCobrar.txtMetodoPago.getText();
+                String cambio = conexCobrar.txt_cambio.getText();
+                int pagoCliente = Integer.parseInt(conexCobrar.txt_cuanto_paga.getText());
+                
+                Object[] venta = {retornaIDVenta(),metodo,nombre,nf.format(pagoCliente),cambio,nf.format(montoTotal)};
+                modeloTablaHistorial.addRow(venta);
+                modeloTablaHistorial.fireTableDataChanged();
+                
+                conexCobrar.setVisible(false);
+                limpiarVenta();
+                JOptionPane.showMessageDialog(rootPane, "Se ha realizado correctamente la compra","Informacion",JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
+        conexCobrar.txt_cuanto_paga.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int dinero_ingresado = Integer.parseInt(conexCobrar.txt_cuanto_paga.getText());
+                conexCobrar.txt_cambio.setText(nf.format((montoTotal - dinero_ingresado)*-1));
+            }
+        });
+        
+        conexCobrar.setVisible(true);
     }//GEN-LAST:event_bttCobrarActionPerformed
 
     private void txt_fecha_tab_inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecha_tab_inventarioActionPerformed
@@ -1191,8 +1245,49 @@ public class PrincipalGI extends javax.swing.JFrame
 
     private void bttAddProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAddProductoActionPerformed
         addProducto add = new addProducto();
-        add.copiarDiccionario(dicInventario);
         add.setVisible(true);
+        
+        JButton bttAdd = add.retornaBotonAdd();
+        bttAdd.addActionListener((ActionEvent e) -> {
+            String nombreNuevoProducto;
+            int valorNuevoProducto = 0, cantidadNuevoProducto = 0;
+
+            if(!add.txtCantidadNuevoProducto.getText().equals("") && !add.txtNombreNuevoProducto.getText().equals("") && !add.txtValorNuevoProducto.getText().equals(""))
+            {
+                nombreNuevoProducto=add.txtNombreNuevoProducto.getText();
+                cantidadNuevoProducto=Integer.parseInt(add.txtCantidadNuevoProducto.getText());
+                valorNuevoProducto=Integer.parseInt(add.txtValorNuevoProducto.getText());
+
+                if (cantidadNuevoProducto < 0)
+                {
+                    JOptionPane.showMessageDialog(rootPane, "La cantidad no puede ser menor a 0", "ERROR!", JOptionPane.WARNING_MESSAGE);
+                    add.txtCantidadNuevoProducto.setText("");
+                }
+                else if (valorNuevoProducto <= 0)
+                {
+                    JOptionPane.showMessageDialog(rootPane, "El valor del producto no puede ser 0 o menor.", "ERROR!", JOptionPane.WARNING_MESSAGE);
+                    add.txtValorNuevoProducto.setText("");
+                }
+                else if (dicInventario.containsKey(nombreNuevoProducto))
+                {
+                    JOptionPane.showMessageDialog(rootPane, "El producto ya existe.", "ERROR!", JOptionPane.WARNING_MESSAGE);
+                    add.txtNombreNuevoProducto.setText("");
+                }
+                else
+                {
+                    Producto productoNuevo = new Producto(retornaIDProducto(),nombreNuevoProducto,cantidadNuevoProducto,valorNuevoProducto,true);
+                    agregarProductoDicInventario(productoNuevo.getIDProducto(),productoNuevo.getNombre(), productoNuevo.getCantidad(),
+                            productoNuevo.getPrecio(), productoNuevo.isEstado());
+
+                    JOptionPane.showMessageDialog(rootPane, "Se agrego correctamente el producto","Informacion",JOptionPane.INFORMATION_MESSAGE);
+                    add.setVisible(false);
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(rootPane, "Verifique que los campos requeridos esten correctos", "ERROR!", JOptionPane.WARNING_MESSAGE);
+            }
+        });
     }//GEN-LAST:event_bttAddProductoActionPerformed
 
     private void bttEliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttEliminarProductoActionPerformed
