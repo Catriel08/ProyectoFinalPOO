@@ -7,25 +7,33 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class PrincipalGI extends javax.swing.JFrame 
 {
+    //formatos
     NumberFormat nf = NumberFormat.getCurrencyInstance();
+    String formato;
+    
+    //Busqueda de algun producto
+    TableRowSorter<DefaultTableModel> sorter;
     
     //Diccionarios.
     Map<String, Producto> dicInventario;
     Map<String, Producto> dicVentas;
     
-    DefaultTableModel modeloTablaInventario, modeloTablaVentas;
-    
+    //modelo de tabals
+    DefaultTableModel modeloTablaInventario, modeloTablaVentas, modeloTablaHistorial;
     
     //Variables de clase
     private String contadorFormateado;
     private int IDProducto=0;
     private int numeroProducto = 0;
     private int subtotal = 0;
-    String formato;
+    int montoTotal = 0, IDVenta=0;
+    private String montoTotalFormateado;
 
 
     public PrincipalGI() 
@@ -33,7 +41,7 @@ public class PrincipalGI extends javax.swing.JFrame
         this.formato = "%03d";
         initComponents();
         
-        //Creando los diccionarios
+        //Creado los diccionarios
         dicInventario = new HashMap<>();
         dicVentas = new HashMap<>();
         
@@ -42,11 +50,10 @@ public class PrincipalGI extends javax.swing.JFrame
         txt_fecha_tab_inventario.setText(fecha());
         txt_fecha_tab_historial.setText(fecha());
         
-        //Modelo y especificaciones de la Tabla de Ventas
-        modeloTablaVentas = (DefaultTableModel) tablaVentas.getModel();
+        //Modelo y especificaciones de la Tabla de Historial
+        modeloTablaHistorial = (DefaultTableModel) tablaHistorial.getModel();
         
         //Modelo y especificaciones de la Tabla de ventas
-        
         modeloTablaVentas = (DefaultTableModel) tablaVentas.getModel();
         tablaVentas.getColumnModel().getColumn(1).setMaxWidth(100);
         tablaVentas.getColumnModel().getColumn(1).setPreferredWidth(100);
@@ -60,9 +67,11 @@ public class PrincipalGI extends javax.swing.JFrame
         tablaInventario.getColumnModel().getColumn(1).setMaxWidth(280);
         tablaInventario.getColumnModel().getColumn(1).setPreferredWidth(280);
         
+        sorter = new TableRowSorter<>(modeloTablaInventario);
+        tablaInventario.setRowSorter(sorter);
+        
         //Cargando los productos predeterminados
         cargarProductosPredeterminados();
-        //actualizarTablaInventario(dicInventario);
     }
     
     public String fecha()
@@ -79,30 +88,20 @@ public class PrincipalGI extends javax.swing.JFrame
         return numeroProducto;
     }
     
-    //Metodos relacionados con el TabbedPane de ventass.
-    
-    /*public int[] verificaProductoTablaVentas(int opcionAEjecutar)
+    public int retornaIDVenta()
     {
-        int existe = 0;
-        int contadorFila = 0;
-        int[] listaRespuesta = new int[2];
-                
-        if (opcionAEjecutar == 1){
-            for (int i = 0; i < tablaVentas.getRowCount(); i++){       
-                if (txtNombreProducto.getText().compareToIgnoreCase(tablaVentas.getValueAt(i, 2).toString()) == 0){
-                    existe = 1;
-                    contadorFila = i;
-                }   
-            }
-        } 
-        
-        listaRespuesta[0] = existe;
-        listaRespuesta[1] = contadorFila;
-                
-        return listaRespuesta;
-    }*/
+        IDVenta++;
+        return IDVenta;
+    }
     
-    
+    public void limpiarVenta() {
+        montoTotal=0;
+        txt_monto_total.setText(nf.format(montoTotal));
+        modeloTablaVentas.setRowCount(0);
+        txtNombreProducto.setText("");
+        txt_cantidad.setText("");
+        modeloTablaVentas.fireTableDataChanged();
+    }
     
     //Metodos relacionados con el TabbedPane de Inventario.
     
@@ -130,30 +129,17 @@ public class PrincipalGI extends javax.swing.JFrame
         String contadorFormateado; 
         Producto pro = new Producto(IDProducto,  nombre,  cantidad,  precio,  estado);
         dicInventario.put(pro.getNombre(),pro);
-        Object[] producto0 =  {contadorFormateado = String.format(formato, pro.getIDProducto()), pro.getNombre(), pro.getCantidad(), pro.getPrecio(), retornarDisponibilidadProducto(pro.isEstado())};
+        Object[] producto0 =  {contadorFormateado = String.format(formato, pro.getIDProducto()), pro.getNombre(), pro.getCantidad(), nf.format(pro.getPrecio()), retornarDisponibilidadProducto(pro.isEstado())};
         modeloTablaInventario.addRow(producto0);
         modeloTablaInventario.fireTableDataChanged();
      
      }
      
-     public boolean actualizarTablaInventario(Map<String, Producto> diccionario)
-     {
-         boolean resultado =  true;
-         Producto pinv;
-         
-         while (modeloTablaInventario.getRowCount()>0){
-             modeloTablaInventario.removeRow(0);
-         }
-         
-         for (Map.Entry<String, Producto> entry : diccionario.entrySet()) {
-            pinv = entry.getValue();
-            Object[] producto2 =  {contadorFormateado = String.format(formato, pinv.getIDProducto()), pinv.getNombre(), pinv.getCantidad(), pinv.getPrecio(), retornarDisponibilidadProducto(pinv.isEstado())};
-            modeloTablaInventario.addRow(producto2);
-            modeloTablaInventario.fireTableDataChanged();
-        }
-         return resultado;
-     }
-    /**
+     public void buscarProducto(String buscar){
+        sorter.setRowFilter(RowFilter.regexFilter(buscar));
+    }
+     
+     /**
      * Metodo que permite el incremento del atributo IDProducto de la clase Producto.
      * @return > IDProducto incrementado en 1.
      */
@@ -182,6 +168,25 @@ public class PrincipalGI extends javax.swing.JFrame
         }
         return disponibilidad;
     }
+     
+     public boolean actualizarTablaInventario(Map<String, Producto> diccionario)
+     {
+         boolean resultado =  true;
+         Producto pinv;
+         
+         while (modeloTablaInventario.getRowCount()>0){
+             modeloTablaInventario.removeRow(0);
+         }
+         
+         for (Map.Entry<String, Producto> entry : diccionario.entrySet()) {
+            pinv = entry.getValue();
+            Object[] producto2 =  {contadorFormateado = String.format(formato, pinv.getIDProducto()), pinv.getNombre(), pinv.getCantidad(), pinv.getPrecio(), retornarDisponibilidadProducto(pinv.isEstado())};
+            modeloTablaInventario.addRow(producto2);
+            modeloTablaInventario.fireTableDataChanged();
+        }
+         return resultado;
+     }
+    
     
     /**
      * Metodo que verifica si el producto a añadir ya existe o no.
@@ -1086,7 +1091,6 @@ public class PrincipalGI extends javax.swing.JFrame
     private void btt_agregar_codigo_del_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_agregar_codigo_del_productoActionPerformed
         String nombreProducto = txtNombreProducto.getText();
         int cantidad = Integer.parseInt(txt_cantidad.getText());
-        actualizarDiccionario(dicInventario);
         Producto productoInventario = dicInventario.get(nombreProducto);
         
          if(nombreProducto.equals("") || txt_cantidad.getText().equals(""))
@@ -1118,7 +1122,7 @@ public class PrincipalGI extends javax.swing.JFrame
                     {
                         modeloTablaVentas.removeRow(i);
                         Object[] productoVenta = {i+1, contadorFormateado = String.format(formato,p.getIDProducto()), 
-                            p.getNombre(), p.getCantidad(), p.getPrecio(), subtotal};
+                            p.getNombre(), p.getCantidad(), nf.format(p.getPrecio()), subtotal};
                         modeloTablaVentas.insertRow(i,productoVenta);
                         modeloTablaVentas.fireTableDataChanged();
                         
@@ -1136,7 +1140,7 @@ public class PrincipalGI extends javax.swing.JFrame
                 subtotal = p.getPrecio()*cantidad;
                 
                 Object[] productoVenta = {retornaNumeracionProductoVentas(),contadorFormateado = String.format(formato,p.getIDProducto()), 
-                    p.getNombre(), cantidad, p.getPrecio(), subtotal};
+                    p.getNombre(), cantidad, nf.format(p.getPrecio()), subtotal};
                 
                 modeloTablaVentas.addRow(productoVenta);
                 modeloTablaVentas.fireTableDataChanged();
@@ -1144,25 +1148,23 @@ public class PrincipalGI extends javax.swing.JFrame
             }
                 Producto pinv = dicInventario.get(nombreProducto);
                 pinv.setCantidad(pinv.getCantidad()-cantidad);
-                
-                actualizarTablaInventario(dicInventario);
                         
                 for (int i = 0; i < modeloTablaInventario.getRowCount(); i++) {
-                    if  (Integer.parseInt(modeloTablaInventario.getValueAt(i, 0).toString())==pinv.getIDProducto())
+                    if  (modeloTablaInventario.getValueAt(i, 1).toString().equals(pinv.getNombre()))
                     {
                         modeloTablaInventario.removeRow(i);
-                        Object[] producto0 =  {contadorFormateado = String.format(formato, pinv.getIDProducto()), pinv.getNombre(), pinv.getCantidad(), pinv.getPrecio(), retornarDisponibilidadProducto(pinv.isEstado())};
+                        Object[] producto0 =  {contadorFormateado = String.format(formato, pinv.getIDProducto()), pinv.getNombre(), pinv.getCantidad(),nf.format(pinv.getPrecio()), retornarDisponibilidadProducto(pinv.isEstado())};
                         modeloTablaInventario.addRow(producto0);
                         modeloTablaInventario.fireTableDataChanged();
                     }
                 }
                 
-            int subtotal=0;
                 for (int i = 0; i < modeloTablaVentas.getRowCount(); i++)
                 {
-                    subtotal += Integer.parseInt(modeloTablaVentas.getValueAt(i, 5).toString());
+                    montoTotal += Integer.parseInt(modeloTablaVentas.getValueAt(i, 5).toString());
                 }
-                    txt_monto_total.setText(Integer.toString(subtotal));
+                
+                txt_monto_total.setText(nf.format(montoTotal));
         }
     }//GEN-LAST:event_btt_agregar_codigo_del_productoActionPerformed
 
